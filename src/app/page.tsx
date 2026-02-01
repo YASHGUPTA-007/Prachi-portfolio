@@ -22,6 +22,7 @@ import {
 
 export default function Portfolio() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   
   const yText = useTransform(scrollYProgress, [0, 1], [0, 150]);
@@ -32,6 +33,14 @@ export default function Portfolio() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   const skills = [
     { name: "ServiceNow", level: 95 },
@@ -44,11 +53,11 @@ export default function Portfolio() {
     <div className="min-h-screen bg-gradient-to-br from-[#FAFAF9] via-[#FFFFFF] to-[#FFF8F3] text-[#1a1a1a] font-sans selection:bg-[#FF6B6B] selection:text-white antialiased">
       
       {/* --- Enhanced Navigation --- */}
-      <nav className={`fixed w-full z-50 transition-all duration-700 ${isScrolled ? "bg-white/95 backdrop-blur-2xl shadow-lg shadow-black/5 py-4" : "py-6 bg-transparent"}`}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center">
+      <nav className={`fixed w-full z-50 transition-all duration-700 ${isScrolled ? "bg-white/95 backdrop-blur-2xl shadow-lg shadow-black/5 py-3 sm:py-4" : "py-4 sm:py-6 bg-transparent"}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex justify-between items-center">
           <motion.a 
             href="#" 
-            className="text-2xl font-bold tracking-tight hover:text-[#FF6B6B] transition-colors"
+            className="text-xl sm:text-2xl font-bold tracking-tight hover:text-[#FF6B6B] transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -80,11 +89,59 @@ export default function Portfolio() {
               Get In Touch <ArrowUpRight className="w-4 h-4" />
             </motion.a>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-[#1a1a1a] hover:text-[#FF6B6B] transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-2xl border-b border-gray-200 shadow-lg"
+          >
+            <div className="px-4 py-4 space-y-4">
+              {[
+                { name: 'Expertise', id: 'expertise' },
+                { name: 'Experience', id: 'work' },
+                { name: 'Contact', id: 'contact' }
+              ].map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.id)}
+                  className="block w-full text-left text-sm font-semibold text-[#4a4a4a] hover:text-[#FF6B6B] transition-colors py-2"
+                >
+                  {item.name}
+                </button>
+              ))}
+              <motion.button
+                onClick={() => scrollToSection('contact')}
+                className="w-full flex items-center justify-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#FF6B6B] to-[#FF9A6C] text-white font-semibold rounded-full shadow-lg"
+                whileTap={{ scale: 0.95 }}
+              >
+                Get In Touch <ArrowUpRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
       </nav>
 
       {/* --- Hero Section --- */}
-      <section className="relative pt-28 pb-20 px-6 lg:px-12 max-w-7xl mx-auto min-h-screen flex flex-col justify-center">
+      <section className="relative pt-24 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto min-h-screen flex flex-col justify-center">
         
         {/* Refined Background Elements */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#FFE5E5] to-[#FFF0E5] rounded-full blur-3xl opacity-40 -z-10"></div>
@@ -110,40 +167,40 @@ export default function Portfolio() {
                 </span>
               </div>
 
-              <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] mb-6 tracking-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] mb-4 sm:mb-6 tracking-tight">
                 Prachi Gupta
               </h1>
 
               <div className="w-20 h-1 bg-gradient-to-r from-[#FF6B6B] to-[#FF9A6C] mb-8 rounded-full"></div>
 
-              <p className="text-xl lg:text-2xl text-[#4a4a4a] leading-relaxed max-w-xl mb-4 font-light">
+              <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-[#4a4a4a] leading-relaxed max-w-xl mb-3 sm:mb-4 font-light">
                 ServiceNow Administrator specializing in 
-                <span className="font-semibold text-[#1a1a1a] relative inline-block mx-2">
+                <span className="font-semibold text-[#1a1a1a] relative inline-block mx-1 sm:mx-2">
                   HR Operations
                   <span className="absolute bottom-0 left-0 w-full h-2 bg-[#FFE5E5] -z-10"></span>
                 </span>
                 and
-                <span className="font-semibold text-[#1a1a1a] relative inline-block mx-2">
+                <span className="font-semibold text-[#1a1a1a] relative inline-block mx-1 sm:mx-2">
                   Compliance Management
                   <span className="absolute bottom-0 left-0 w-full h-2 bg-[#FFF0E5] -z-10"></span>
                 </span>
               </p>
 
-              <p className="text-lg text-[#6a6a6a] mb-10 font-light">
+              <p className="text-sm sm:text-base lg:text-lg text-[#6a6a6a] mb-6 sm:mb-10 font-light">
                 Currently optimizing workflows at <span className="font-semibold text-[#1a1a1a]">Bank of America</span>
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3 sm:gap-4">
                 <motion.button 
-                  className="px-8 py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF9A6C] text-white font-semibold rounded-full shadow-lg shadow-[#FF6B6B]/30 flex items-center gap-3"
+                  className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF9A6C] text-white text-sm sm:text-base font-semibold rounded-full shadow-lg shadow-[#FF6B6B]/30 flex items-center gap-2 sm:gap-3"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: "0 20px 40px rgba(255, 107, 107, 0.4)" }}
                   whileTap={{ scale: 0.95 }}
                 >
-                   Download Resume <Download className="w-5 h-5" />
+                   Download Resume <Download className="w-4 h-4 sm:w-5 sm:h-5" />
                 </motion.button>
                 <motion.a 
                   href="#work" 
-                  className="px-8 py-4 bg-white text-[#1a1a1a] border-2 border-[#e5e5e5] font-semibold rounded-full hover:border-[#FF6B6B] transition-all flex items-center gap-2 shadow-sm"
+                  className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-[#1a1a1a] border-2 border-[#e5e5e5] text-sm sm:text-base font-semibold rounded-full hover:border-[#FF6B6B] transition-all flex items-center gap-2 shadow-sm"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -184,17 +241,17 @@ export default function Portfolio() {
             
             {/* Location Card */}
             <motion.div 
-              className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-[#f5f5f5] flex items-center gap-4"
+              className="absolute -bottom-4 sm:-bottom-6 -left-4 sm:-left-6 bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl border border-[#f5f5f5] flex items-center gap-3 sm:gap-4 max-w-[calc(100%+1.5rem)] sm:max-w-none"
               initial={{ x: -50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.7 }}
             >
-               <div className="bg-gradient-to-br from-[#FFE5E5] to-[#FFF0E5] p-3 rounded-xl">
-                 <MapPin className="w-6 h-6 text-[#FF6B6B]" />
+               <div className="bg-gradient-to-br from-[#FFE5E5] to-[#FFF0E5] p-2 sm:p-3 rounded-lg sm:rounded-xl shrink-0">
+                 <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF6B6B]" />
                </div>
-               <div>
-                 <p className="text-xs font-semibold text-[#9a9a9a] uppercase tracking-wide">Relocating To</p>
-                 <p className="text-lg font-bold text-[#1a1a1a]">UAE / Dubai</p>
+               <div className="min-w-0">
+                 <p className="text-[10px] sm:text-xs font-semibold text-[#9a9a9a] uppercase tracking-wide">Relocating To</p>
+                 <p className="text-sm sm:text-lg font-bold text-[#1a1a1a] truncate sm:whitespace-normal">UAE / Dubai</p>
                </div>
             </motion.div>
 
@@ -490,85 +547,85 @@ export default function Portfolio() {
       </section>
 
       {/* --- Contact Section --- */}
-      <footer id="contact" className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] text-white pt-24 pb-12 overflow-hidden">
+      <footer id="contact" className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] text-white pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-12 overflow-hidden">
          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#FF6B6B]/10 rounded-full blur-3xl"></div>
          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#FF9A6C]/10 rounded-full blur-3xl"></div>
 
-         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-16 mb-20">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 mb-12 sm:mb-20">
                <motion.div
                  initial={{ opacity: 0, y: 30 }}
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                >
-                  <h2 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                     Let's Create <br/>
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+                     Let's Create <br className="hidden sm:block"/>
                      <span className="bg-gradient-to-r from-[#FF6B6B] to-[#FF9A6C] bg-clip-text text-transparent">
                        Something Great
                      </span>
                   </h2>
-                  <p className="text-[#b0b0b0] text-xl mb-12 leading-relaxed font-light max-w-lg">
+                  <p className="text-[#b0b0b0] text-base sm:text-lg lg:text-xl mb-8 sm:mb-12 leading-relaxed font-light max-w-lg">
                      Ready to bring expertise and dedication to optimize your ServiceNow operations in the UAE.
                   </p>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                      <motion.a 
                        href="mailto:Prachi.gupta.connect@gmail.com" 
-                       className="group flex items-center gap-4 text-xl hover:text-[#FF9A6C] transition-colors"
+                       className="group flex items-start sm:items-center gap-3 sm:gap-4 text-base sm:text-xl hover:text-[#FF9A6C] transition-colors bg-white/5 rounded-xl p-4 sm:p-0 sm:bg-transparent"
                        whileHover={{ x: 10 }}
                      >
-                        <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-[#FF6B6B] group-hover:to-[#FF9A6C] transition-all">
-                           <Mail className="w-6 h-6" />
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-[#FF6B6B] group-hover:to-[#FF9A6C] transition-all shrink-0">
+                           <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
                         </div>
-                        <div>
-                          <p className="text-sm text-[#b0b0b0] font-light">Email</p>
-                          <p className="font-semibold">Prachi.gupta.connect@gmail.com</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs sm:text-sm text-[#b0b0b0] font-light mb-1">Email</p>
+                          <p className="font-semibold text-sm sm:text-base break-all sm:break-normal">Prachi.gupta.connect@gmail.com</p>
                         </div>
                      </motion.a>
                      
                      <motion.div 
-                       className="flex items-center gap-4 text-xl"
+                       className="flex items-start sm:items-center gap-3 sm:gap-4 text-base sm:text-xl bg-white/5 rounded-xl p-4 sm:p-0 sm:bg-transparent"
                        whileHover={{ x: 10 }}
                      >
-                        <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center">
-                           <MapPin className="w-6 h-6" />
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0">
+                           <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
                         </div>
-                        <div>
-                          <p className="text-sm text-[#b0b0b0] font-light">Phone</p>
-                          <p className="font-semibold">+91-8435151778</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs sm:text-sm text-[#b0b0b0] font-light mb-1">Phone</p>
+                          <p className="font-semibold text-sm sm:text-base break-all sm:break-normal">+91-8435151778</p>
                         </div>
                      </motion.div>
                   </div>
                </motion.div>
 
                <motion.div 
-                 className="bg-white/5 backdrop-blur-xl p-10 rounded-3xl border border-white/10"
+                 className="bg-white/5 backdrop-blur-xl p-6 sm:p-10 rounded-2xl sm:rounded-3xl border border-white/10"
                  initial={{ opacity: 0, scale: 0.95 }}
                  whileInView={{ opacity: 1, scale: 1 }}
                  viewport={{ once: true }}
                >
-                  <div className="flex items-center gap-3 mb-8">
-                    <Zap className="w-6 h-6 text-[#FF9A6C]" />
-                    <h3 className="text-2xl font-bold">Quick Facts</h3>
+                  <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                    <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF9A6C]" />
+                    <h3 className="text-xl sm:text-2xl font-bold">Quick Facts</h3>
                   </div>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {[
                       { label: "Availability", value: "Immediate" },
                       { label: "Work Authorization", value: "Open to Sponsorship" },
                       { label: "Preferred Location", value: "Dubai, UAE" },
                       { label: "Work Mode", value: "On-site / Hybrid" }
                     ].map((fact, i) => (
-                      <div key={i} className="flex justify-between items-center py-3 border-b border-white/10">
-                        <span className="text-[#b0b0b0] font-light">{fact.label}</span>
-                        <span className="font-semibold">{fact.value}</span>
+                      <div key={i} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2 py-2 sm:py-3 border-b border-white/10">
+                        <span className="text-xs sm:text-sm text-[#b0b0b0] font-light">{fact.label}</span>
+                        <span className="text-sm sm:text-base font-semibold text-right sm:text-left">{fact.value}</span>
                       </div>
                     ))}
                   </div>
                </motion.div>
             </div>
 
-            <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[#b0b0b0] text-sm font-light">
+            <div className="pt-6 sm:pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-[#b0b0b0] text-xs sm:text-sm font-light text-center md:text-left">
                <p>© {new Date().getFullYear()} Prachi Gupta. All rights reserved.</p>
                <p>Crafted with precision and passion</p>
             </div>
