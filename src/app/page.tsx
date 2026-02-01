@@ -191,13 +191,16 @@ export default function Portfolio() {
               </p>
 
               <div className="flex flex-wrap gap-3 sm:gap-4">
-                <motion.button 
+                <motion.a 
+                  href="https://drive.google.com/uc?export=download&id=1y7qQstAMswB_BmMkwbMo12r2xAcvKGzH"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF9A6C] text-white text-sm sm:text-base font-semibold rounded-full shadow-lg shadow-[#FF6B6B]/30 flex items-center gap-2 sm:gap-3"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: "0 20px 40px rgba(255, 107, 107, 0.4)" }}
                   whileTap={{ scale: 0.95 }}
                 >
                    Download Resume <Download className="w-4 h-4 sm:w-5 sm:h-5" />
-                </motion.button>
+                </motion.a>
                 <motion.a 
                   href="#work" 
                   className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-[#1a1a1a] border-2 border-[#e5e5e5] text-sm sm:text-base font-semibold rounded-full hover:border-[#FF6B6B] transition-all flex items-center gap-2 shadow-sm"
