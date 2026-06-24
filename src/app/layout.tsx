@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Prachi Gupta - ServiceNow CSA Certified Professional",
+  title: "Prachi Guptaa - ServiceNow CSA Certified Professional",
   description: "ServiceNow Certified System Administrator with 3+ years of enterprise HR compliance and onboarding operations experience. Seeking ServiceNow Administrator/Analyst role.",
 };
 
